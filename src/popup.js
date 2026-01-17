@@ -29,6 +29,7 @@ sections.forEach((section, index) => {
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
+  checkbox.dataset.type = 'section';
   checkbox.dataset.section = sectionId;
 
   const slider = document.createElement('span');
@@ -43,19 +44,44 @@ sections.forEach((section, index) => {
 
 // read checkboxes status
 chrome.storage.sync.get(null, (data) => {
-  document.querySelectorAll('input[type=checkbox]').forEach((cb) => {
-    const defaultValue = ['fix-titles', 'reload-page'].includes(cb.id);
-    cb.checked = data[cb.dataset.section] ?? !defaultValue;
+  chrome.storage.local.get(['autoReload'], (localData) => {
+    document.querySelectorAll('input[type=checkbox]').forEach((cb) => {
+      const type = cb.dataset.type;
+
+      if (type === 'section') {
+        const defaultValue = ['fix-titles', 'reload-page'].includes(cb.id);
+        cb.checked = data[cb.dataset.section] ?? !defaultValue;
+      }
+
+      if (type === 'auto-reload') {
+        cb.checked = Boolean(localData.autoReload);
+      }
+    });
   });
 });
 
 // update checkboxes status
 const container = document.getElementById('container');
 container.addEventListener('change', (e) => {
-  if (e.target.type !== 'checkbox') return;
+  const cb = e.target;
+  if (cb.type !== 'checkbox') return;
 
-  const section = e.target.dataset.section;
-  chrome.storage.sync.set({
-    [section]: e.target.checked,
-  });
+  const type = cb.dataset.type;
+
+  if (type === 'section') {
+    chrome.storage.sync.set({
+      [cb.dataset.section]: cb.checked,
+    });
+  }
+
+  if (type === 'auto-reload') {
+    chrome.storage.local.set({
+      autoReload: cb.checked,
+    });
+
+    chrome.runtime.sendMessage({
+      type: 'SET_AUTO_RELOAD',
+      enabled: cb.checked,
+    });
+  }
 });
