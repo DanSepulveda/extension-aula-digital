@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Aula SENCE",
+  "version": "1.0",
+  "description": "Mostrar/ocultar secciones Aula Digital y corregir sus respectivos títulos.",
+  "permissions": ["storage"],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://auladigital.sence.cl/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
