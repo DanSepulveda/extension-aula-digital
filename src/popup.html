@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      :root {
+        --switch-width: 36px;
+        --switch-height: 20px;
+        --color: 0 57 107;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #eef5f9;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          'Open Sans',
+          sans-serif;
+        font-size: 14px;
+        padding: 20px;
+      }
+
+      main {
+        background-color: white;
+        border-radius: 0.5em;
+        padding: 1em;
+      }
+
+      main section:first-child {
+        margin-bottom: 1.8em;
+      }
+
+      h3 {
+        color: rgb(var(--color));
+        text-align: center;
+        font-size: 1.25em;
+        margin-bottom: 0.5em;
+      }
+
+      .switch-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5px;
+        width: 260px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        letter-spacing: 0.2px;
+      }
+
+      .switch {
+        position: relative;
+        width: var(--switch-width);
+        height: var(--switch-height);
+        flex-shrink: 0;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        inset: 0;
+        background-color: #ccc;
+        transition: 0.25s;
+        border-radius: var(--switch-height);
+      }
+
+      .slider::before {
+        content: '';
+        position: absolute;
+        width: calc(var(--switch-height) - 4px);
+        height: calc(var(--switch-height) - 4px);
+        left: 2px;
+        bottom: 2px;
+        background-color: #fff;
+        transition: 0.25s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: rgb(var(--color) / 0.55);
+      }
+
+      input:checked + .slider::before {
+        transform: translateX(calc(var(--switch-height) - 4px));
+      }
+
+      .switch-row:has(input:checked) {
+        color: rgb(var(--color));
+      }
+
+      .switch-row:has(input:not(:checked)) {
+        color: #757575;
+      }
+
+      .switch-row:hover .text {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="container">
+      <section>
+        <h3>Secciones</h3>
+        <div id="controls"></div>
+      </section>
+      <section>
+        <h3>Configuración</h3>
+        <div id="config">
+          <label class="switch-row">
+            <span class="text">Corregir títulos</span>
+            <span class="switch">
+              <input
+                type="checkbox"
+                id="fix-titles"
+                data-section="fix-titles"
+              />
+              <span class="slider"></span>
+            </span>
+          </label>
+          <label class="switch-row">
+            <span class="text">Recargar cada 20 min</span>
+            <span class="switch">
+              <input
+                type="checkbox"
+                id="reload-page"
+                data-section="reload-page"
+              />
+              <span class="slider"></span>
+            </span>
+          </label>
+        </div>
+      </section>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
