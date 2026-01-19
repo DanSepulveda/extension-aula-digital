@@ -1,5 +1,5 @@
-const RELOAD_INTERVAL_MINUTES = 20;
-const ALARM_NAME = 'auto-reload';
+const RELOAD_INTERVAL_MINUTES = 25;
+const ALARM_NAME = 'reload';
 
 chrome.runtime.onInstalled.addListener(() => {
   restoreAlarm();
@@ -16,8 +16,8 @@ chrome.runtime.onMessage.addListener((msg) => {
 });
 
 function restoreAlarm() {
-  chrome.storage.local.get(['autoReload'], ({ autoReload }) => {
-    if (autoReload) {
+  chrome.storage.local.get(['reload'], ({ reload }) => {
+    if (reload) {
       enableReload();
     }
   });
@@ -41,6 +41,8 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   const tabs = await chrome.tabs.query({
     url: 'https://auladigital.sence.cl/*',
   });
+
+  if (!tabs.length) return;
 
   for (const tab of tabs) {
     chrome.tabs.reload(tab.id);
