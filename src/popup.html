@@ -8,13 +8,11 @@
         --switch-height: 20px;
         --color: 0 57 107;
       }
-
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
-
       body {
         background-color: #eef5f9;
         font-family:
@@ -27,25 +25,21 @@
         font-size: 14px;
         padding: 20px;
       }
-
       main {
         background-color: white;
         border-radius: 0.5em;
         padding: 1em;
       }
-
       main section:first-child {
         margin-bottom: 1.8em;
       }
-
       h3 {
         color: rgb(var(--color));
         text-align: center;
         font-size: 1.25em;
         margin-bottom: 0.5em;
       }
-
-      .switch-row {
+      label {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -54,21 +48,32 @@
         cursor: pointer;
         margin-bottom: 10px;
         letter-spacing: 0.2px;
+        color: #757575;
+        user-select: none;
       }
-
+      label:hover {
+        text-decoration: underline;
+      }
+      label:has(input:checked) {
+        color: rgb(var(--color));
+      }
+      input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      input:checked + .slider {
+        background-color: rgb(var(--color) / 0.55);
+      }
+      input:checked + .slider::before {
+        transform: translateX(calc(var(--switch-height) - 4px));
+      }
       .switch {
         position: relative;
         width: var(--switch-width);
         height: var(--switch-height);
         flex-shrink: 0;
       }
-
-      .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-      }
-
       .slider {
         position: absolute;
         inset: 0;
@@ -76,7 +81,6 @@
         transition: 0.25s;
         border-radius: var(--switch-height);
       }
-
       .slider::before {
         content: '';
         position: absolute;
@@ -88,26 +92,6 @@
         transition: 0.25s;
         border-radius: 50%;
       }
-
-      input:checked + .slider {
-        background-color: rgb(var(--color) / 0.55);
-      }
-
-      input:checked + .slider::before {
-        transform: translateX(calc(var(--switch-height) - 4px));
-      }
-
-      .switch-row:has(input:checked) {
-        color: rgb(var(--color));
-      }
-
-      .switch-row:has(input:not(:checked)) {
-        color: #757575;
-      }
-
-      .switch-row:hover .text {
-        text-decoration: underline;
-      }
     </style>
   </head>
   <body>
@@ -118,26 +102,25 @@
       </section>
       <section>
         <h3>Configuración</h3>
-        <div id="config">
-          <label class="switch-row">
-            <span class="text">Corregir títulos</span>
+        <div>
+          <label>
+            Corregir títulos
             <span class="switch">
               <input
                 type="checkbox"
-                id="fix-titles"
-                data-type="section"
-                data-section="fix-titles"
+                data-type="sync"
+                data-name="fix"
               />
               <span class="slider"></span>
             </span>
           </label>
-          <label class="switch-row">
-            <span class="text">Recargar cada 20 min</span>
+          <label>
+            Recargar cada 20 min
             <span class="switch">
               <input
                 type="checkbox"
-                id="reload-page"
-                data-type="auto-reload"
+                data-type="local"
+                data-name="reload"
               />
               <span class="slider"></span>
             </span>
